@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Charging power recommandation - Battery-Friendly Charging Coach</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="/static/styles.css">
+
+  <style>
+    body {
+      overflow: auto !important;
+      background-color: #f0f9f4;
+    }
+
+    body::after {
+      display: none !important;
+    }
+
+    .main-content {
+      max-width: 800px;
+      margin: 120px auto 60px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 2;
+    }
+
+    .page-title {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #16423c;
+    }
+
+    .page-title h1 {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .page-title p {
+      font-size: 1rem;
+      color: #555;
+      margin-top: 8px;
+    }
+
+    /* 表单样式 */
+    form {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+      form {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    label {
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    input[type="number"] {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    button.submit-btn {
+      grid-column: span 2;
+      padding: 12px 20px;
+      background: #16423c;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    button.submit-btn:hover {
+      background: #2ca01f;
+    }
+
+    #result {
+      margin-top: 25px;
+      padding: 20px;
+      background: #e8f5e9;
+      border-radius: 12px;
+      display: none;
+    }
+
+    #result.show {
+      display: block;
+    }
+
+    #result h3 {
+      color: #16423c;
+      margin-bottom: 10px;
+    }
+
+    #result p {
+      margin: 5px 0;
+      line-height: 1.5;
+    }
+
+    .highlight {
+      font-weight: bold;
+      color: #d32f2f;
+    }
+
+    .safe {
+      color: #2e7d32;
+    }
+
+    
+  </style>
+</head>
+<body class="home">
+
+  <header>
+    <nav>
+      <a class="nav-items" href="/">Home</a>
+      <a class="nav-items" href="/about">About</a>
+      <a class="nav-items" href="/charging_time_prediction">Charging Time Prediction</a>
+      <a class="nav-items" href="/battery_stress">Battery Stress Model</a>
+      <a class="nav-items active" href="/power_detection">Charging Power Prediction</a>
+    </nav>
+  </header>
+
+  <div class="main-content" >
+    <div class="page-title">
+      <h1><i class="fas fa-exclamation-triangle"></i> Charging Power Prediction Model</h1>
+      <img 
+        src="/static/logo.jpg" 
+        alt="Battery-Friendly Logo" 
+        style="position: absolute; top: 16px; right: 16px; width: 100px; height: auto; z-index: 10;"
+      >   
+      <p>Detect abnormal charging patterns to prevent battery degradation and give some recommendations</p>
+    </div>
+
+    <form id="anomalyForm">
+      <div class="form-group">
+        <label for="soc_start">Start SOC (%)</label>
+        <input type="number" id="soc_start" name="soc_start" step="0.01" min="0" max="100" required>
+      </div>
+      <div class="form-group">
+        <label for="soc_end">End SOC (%)</label>
+        <input type="number" id="soc_end" name="soc_end" step="0.01" min="0" max="100" required>
+      </div>
+      <div class="form-group">
+        <label for="temperature">Temperature (°C)</label>
+        <input type="number" id="temperature" name="temperature" step="0.1" required>
+      </div>
+      <div class="form-group">
+        <label for="dod">Depth of Discharge (DoD)</label>
+        <input type="number" id="dod" name="dod" step="0.01" min="0" max="1" required>
+      </div>
+      <div class="form-group">
+        <label for="charging_rate">Charging Rate (C-rate)</label>
+        <input type="number" id="charging_rate" name="charging_rate" step="0.01" required>
+      </div>
+      <div class="form-group">
+        <label for="energy_consumed">Energy Consumed (kWh)</label>
+        <input type="number" id="energy_consumed" name="energy_consumed" step="0.01" required>
+      </div>
+      <div class="form-group">
+        <label for="vehicle_age">Vehicle Age (years)</label>
+        <input type="number" id="vehicle_age" name="vehicle_age" step="1" min="0" required>
+      </div>
+      <div class="form-group">
+        <label for="is_fast_charging">Fast Charging? (0/1)</label>
+        <input type="number" id="is_fast_charging" name="is_fast_charging" min="0" max="1" step="1" required>
+      </div>
+      <div class="form-group">
+        <label for="is_cold_weather">Cold Weather? (0/1)</label>
+        <input type="number" id="is_cold_weather" name="is_cold_weather" min="0" max="1" step="1" required>
+      </div>
+      <div class="form-group">
+        <label for="is_hot_weather">Hot Weather? (0/1)</label>
+        <input type="number" id="is_hot_weather" name="is_hot_weather" min="0" max="1" step="1" required>
+      </div>
+      <div class="form-group">
+        <label for="distance_driven">Distance Driven (km)</label>
+        <input type="number" id="distance_driven" name="distance_driven" step="0.01" required>
+      </div>
+      <div class="form-group">
+        <label for="energy_per_km">Energy per km (kWh/km)</label>
+        <input type="number" id="energy_per_km" name="energy_per_km" step="0.0001" required>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <i class="fas fa-search"></i> Charging Power Prediction
+      </button>
+    </form>
+
+    <div id="result" class="result-box">
+        <h3>Recommendation Result:</h3>
+        <div style="background:#f8f9fa; padding:20px; border-radius:10px; margin-top:15px; font-size:0.9rem; line-height:1.6;">
+            <p style="margin:8px 0; color:#4a90e2; font-weight:500;">
+                <span style="color:#555;">Recommended charging power</span> : 
+                <span id="recommended_power">—</span>
+            </p>
+            <p style="margin:8px 0; color:#4a90e2; font-weight:500;">
+                <span style="color:#555;">Current power</span> : 
+                <span id="current_power">—</span>
+            </p>
+            <p style="margin:8px 0; color:#4a90e2; font-weight:500;">
+                <span style="color:#555;">Power change</span> : 
+                <span id="power_change">—</span>
+            </p>
+            <p style="margin:8px 0; color:#4a90e2; font-weight:500;">
+                <span style="color:#555;">Recommended strategy</span> : 
+                <span id="strategy">—</span>
+            </p>
+            <p style="margin:8px 0; color:#4a90e2; font-weight:500;">
+                <span style="color:#555;">Charging suggestion</span> : 
+                <span id="charger_suggestion">—</span>
+            </p>
+        </div>
+    </div>
+
+  
+
+  <script>
+    document.getElementById('anomalyForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const formData = new FormData(e.target);
+        const payload = {};
+        for (let [key, value] of formData.entries()) {
+            payload[key] = parseFloat(value);
+        }
+
+        try {
+            const response = await fetch('/predict_anomaly', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) throw new Error(`Server error: ${response.status}`);
+
+            const result = await response.json();
+
+    // Helper to format number or show "—"
+            const fmt = (val, unit = 'kW') => val !== null && val !== undefined ? `${val} ${unit}` : '—';
+
+    // Update fields
+            document.getElementById('recommended_power').textContent = fmt(result.recommended_power_kW);
+            document.getElementById('current_power').textContent = fmt(result.current_power_kW);
+
+    // Handle power change with sign and color
+            const powerChangeEl = document.getElementById('power_change');
+            if (result.power_change_kW !== null && result.power_change_kW !== undefined) {
+                const change = result.power_change_kW;
+                powerChangeEl.textContent = `${change >= 0 ? '+' : ''}${change} kW`;
+                powerChangeEl.style.color = change >= 0 ? '#27ae60' : '#e74c3c';
+            } else {
+                powerChangeEl.textContent = '—';
+                powerChangeEl.style.color = '#555';
+            }
+
+            document.getElementById('strategy').textContent = result.strategy || '—';
+            document.getElementById('charger_suggestion').textContent = result.charger_suggestion || '—';
+
+    // Show result box
+            document.getElementById('result').classList.add('show');
+
+        } catch (err) {
+            console.error('Error:', err);
+            alert('Failed to get recommendation: ' + err.message);
+        }
+    });
+    </script>
+    
+</body>
+</html>

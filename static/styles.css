@@ -1,0 +1,350 @@
+/* ============ 全局基础 ============ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  border: none;
+  outline: none;
+  font-family: "Inter", sans-serif;
+  box-sizing: border-box;
+}
+
+/* 关键：允许页面滚动，否则手机无法滑动 */
+body {
+  background-color: #f0f9f4;
+  overflow-x: hidden;
+  overflow-y: auto; /* 必须有，否则手机不能滑动 */
+}
+
+/* =================== 桌面端样式（默认） =================== */
+
+header {
+  position: absolute;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  gap: 15px;
+  padding: 40px 0;
+  height: 50px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 2px 8px rgba(241, 240, 240, 0.4);
+  width: 100%;
+  white-space: nowrap;
+}
+
+nav a {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: #16423c;
+  padding: 20px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+nav a.active,
+nav a:hover {
+  background-color: #16423c;
+  color: white;
+}
+
+nav:hover > a:not(:hover) {
+  background-color: transparent;
+  color: #2ca01f;
+}
+
+/* 首页背景 */
+body.home {
+  background: 
+    linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), 
+    url(/static/car.png); 
+  background-size: cover;
+  background-position: center top;
+  background-attachment: fixed;
+  padding-top: 60px;
+  overflow-y: auto
+}
+
+body.home::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background: linear-gradient(transparent 70%, rgba(252, 242, 242, 0.5));
+}
+
+/* 标题区域 */
+.title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 2;
+}
+
+.title .text-box {
+  background: rgba(247, 253, 246, 0.6);
+  border-radius: 15px;
+  padding: 10px 50px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  display: inline-block;
+  opacity: 0;
+  animation: bottomInTextBox 1.5s ease-out forwards;
+}
+
+@keyframes bottomInTextBox {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.title img.logo-img {
+  width: 140px;
+  height: auto;
+  margin-bottom: 15px;
+}
+
+.title h3 {
+  font-size: 2.5rem;
+  font-weight: 400;
+  letter-spacing: 5px;
+  color: rgb(3, 51, 8);
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+.title h1 {
+  font-size: 12rem;
+  font-weight: 800;
+  letter-spacing: 50px;
+  text-transform: uppercase;
+  color: white;
+  margin: -20px 0;
+}
+
+p {
+  font-size: 25px;
+  font-weight: 300;
+  letter-spacing: 1px;
+  line-height: 1.8;
+  color: rgba(157, 244, 157, 0.7);
+  width: 70%;
+  text-align: center;
+  text-shadow: 0 1px 5px rgba(194, 193, 193, 0.2);
+  margin: 0 auto 20px;
+}
+
+.info-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 3%;
+  z-index: 1;
+}
+
+.slider {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.slider i {
+  display: none;
+}
+
+/* About 页面样式（保持不变） */
+.about-content {
+  margin-top: 100px;
+  padding: 10px;
+  text-align: center;
+}
+
+.about-content .text-box {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.about-content h2 {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #16423c;
+  margin-bottom: 20px;
+}
+
+.about-content h3 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #16423c;
+  margin-top: 20px;
+}
+
+.about-content p {
+  font-size: 1.1rem;
+  color: #000000;
+  line-height: 1.8;
+  margin: 8px 80px;
+  text-align: left;
+}
+
+/* 动画 */
+@keyframes slideInFromBottom {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.about-content ul {
+  list-style-type: none;
+  padding: 10px;
+  animation: slideInFromBottom 1.2s ease-out forwards;
+}
+
+.about-content ul li {
+  font-size: 1.1rem;
+  color: #333;
+  margin: 8px 80px;
+  text-align: left;
+  animation: slideInFromBottom 1.5s ease-out forwards;
+  animation-delay: 0.2s;
+}
+
+.cta {
+  margin-top: 40px;
+}
+
+.cta button {
+  padding: 15px 30px;
+  background-color: #70b5b9;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cta button:hover {
+  background-color: #4d9f5b;
+}
+
+footer {
+  background-color: #70b5b9;
+  color: white;
+  text-align: center;
+  padding: 5px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+footer p {
+  color: #0c4f29;
+}
+
+/* =================== 移动端响应式优化 =================== */
+@media (max-width: 768px) {
+  /* 修复背景图拉伸 */
+  body.home {
+    background-size: cover !important;
+    background-position: center top !important;
+  }
+
+  /* 导航栏：缩小字号，增加间距 */
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 10px;
+    height: auto;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.9) !important;
+  }
+
+  nav a {
+    font-size: 14px !important;
+    padding: 8px 12px !important;
+    min-width: auto;
+  }
+
+  /* 标题：大幅缩小，防止换行 */
+  .title h1 {
+    font-size: 3.5rem !important;
+    letter-spacing: 10px !important;
+    margin: -10px 0 !important;
+  }
+
+  .title h3 {
+    font-size: 1.4rem !important;
+    letter-spacing: 2px !important;
+  }
+
+  .title .text-box {
+    padding: 10px 20px !important;
+    border-radius: 12px !important;
+    width: 85% !important;
+    max-width: 300px !important;
+    margin: 0 auto;
+  }
+
+  .title img.logo-img {
+    width: 100px !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* 文字内容 */
+  p {
+    font-size: 15px !important;
+    width: 90% !important;
+    line-height: 1.6 !important;
+  }
+
+  /* 底部信息 */
+  .info-wrap {
+    bottom: 5% !important;
+  }
+
+  /* CTA 按钮 */
+  .cta {
+    bottom: 10% !important;
+  }
+
+  .cta button {
+    font-size: 16px !important;
+    height: 40px !important;
+    width: 200px !important;
+  }
+
+  /* Footer 改为相对定位，避免遮挡 */
+  footer {
+    position: relative !important;
+    bottom: auto !important;
+    padding: 12px 0 !important;
+  }
+}
