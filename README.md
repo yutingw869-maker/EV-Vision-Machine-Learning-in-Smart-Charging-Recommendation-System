@@ -43,13 +43,12 @@ Feature Engineering: Run cleanning2.py to generate the enhanced dataset ev_charg
 Visualization: Run visualization.py to generate analytical charts (saved as PNG files).
 
 ## Model Training
-Module                     Script                                       Output Files
+run visiualization.py   you can get some png files about visiualizations
 
-Duration Prediction,  python charge.py                    "charging_time_prediction.pkl, metadata.pkl"
-
-Stress Assessment,    python stress_model.py              stress_model.joblib
-
-Power Recommendation, python Charging_power_recommend.py, "charging_power_model.pkl, feature_order.pkl"
+# model:
+run charge.py                      you can get "charging_time_prediction.pkl" and "charging_time_metadata.pkl"
+run stress_model.py                you can get "stress_model.joblib"
+run Charging_power_recommend.py    you can get "charging_power_model.pkl" and "feature_order.pkl"
 
 
 ## Deployment & API Usage
