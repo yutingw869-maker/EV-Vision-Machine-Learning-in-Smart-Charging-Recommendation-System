@@ -41,5 +41,7 @@ Power Recommendation, python Charging_power_recommend.py, "charging_power_model.
 ## Deployment & API Usage
 Once the models (.pkl and .joblib) are generated, start the Flask backend:
 python app.py
+
 Endpoint: http://127.0.0.1:5000
+
 Interface: The platform provides a RESTful API that accepts JSON inputs and returns real-time EV analytics.
