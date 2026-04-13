@@ -15,15 +15,25 @@ E-Vision is an intelligent analytical platform designed to optimize Electric Veh
 
 ## Installation & Environment
 Flask
+
 Flask-Cors
+
 joblib
+
 lightgbm
+
 matplotlib
+
 numpy
+
 pandas
+
 plotly
+
 scikit-learn
+
 seaborn
+
 
 ## Data Pipeline & Visualization
 Data Cleaning: Run cleaning.py to handle outliers and missing values in ev_charging_patterns.xlsx.
@@ -34,12 +44,17 @@ Visualization: Run visualization.py to generate analytical charts (saved as PNG 
 
 ## Model Training
 Module                     Script                                       Output Files
+
 Duration Prediction,  python charge.py                    "charging_time_prediction.pkl, metadata.pkl"
+
 Stress Assessment,    python stress_model.py              stress_model.joblib
+
 Power Recommendation, python Charging_power_recommend.py, "charging_power_model.pkl, feature_order.pkl"
+
 
 ## Deployment & API Usage
 Once the models (.pkl and .joblib) are generated, start the Flask backend:
+
 python app.py
 
 Endpoint: http://127.0.0.1:5000
