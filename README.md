@@ -13,8 +13,17 @@ E-Vision is an intelligent analytical platform designed to optimize Electric Veh
 
 ---
 
-## 🛠️ 1. Installation & Environment
-
+## Installation & Environment
+Flask
+Flask-Cors
+joblib
+lightgbm
+matplotlib
+numpy
+pandas
+plotly
+scikit-learn
+seaborn
 
 ## Data Pipeline & Visualization
 Data Cleaning: Run cleaning.py to handle outliers and missing values in ev_charging_patterns.xlsx.
